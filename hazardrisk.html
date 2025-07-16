@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>災害リスク診断</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+    .page { display: none; padding: 20px; max-width: 800px; margin: auto; background: #fff; }
+    .active { display: block; }
+    h1 { font-size: 1.5em; border-left: 5px solid #0074D9; padding-left: 10px; }
+    .question { font-weight: bold; font-size: 1.2; margin: 20px 0 10px; }
+    .choice { margin: 10px 0; }
+    .choice button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .img-container { display: flex; align-items: center; }
+    .img-container img { width: 45%; margin-right: 5%; }
+    .img-container .text { width: 50%; }
+    .input-block { margin-top: 20px; }
+    .input-block input { width: 100%; padding: 10px; font-size: 1em; }
+  </style>
+<style>
+  body {
+    font-family: "Arial", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+  }
+
+  .page {
+    display: none;
+    padding: 2em;
+  }
+
+  .page.active {
+    display: block;
+  }
+
+  h1 {
+    font-size: 1.5em;
+    margin-bottom: 1em;
+  }
+
+  .question {
+    font-weight: bold;
+    margin-bottom: 1em;
+  }
+
+  button {
+    padding: 0.6em 1em;
+    margin: 0.5em 0.5em 0 0;
+    background-color: #90BCE4;
+    border: none;
+    color: black;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.3em;
+  }
+
+  button:hover {
+    background-color: #90BCE4;
+  }
+
+  .btn-orange { background-color: #fe6a00; font-weight: bold; padding: 0.4em 0.2em; color: white; }
+  .btn-purple { background-color: #853085; font-weight: bold; padding: 0.4em 0.2em; color: white; }
+
+  .choice button {
+    display: block;
+    width: 100%;
+    font-weight: bold;
+    margin-bottom: 1em;
+    font-size:1.3em;
+  }
+
+  .input-block {
+    margin-top: 1em;
+  }
+
+  input[type="text"] {
+    padding: 0.5em;
+    width: 100%;
+    max-width: 300px;
+    height: 50px;
+    font-size: 1.4em;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 0em;
+    width: 2em;
+    height: 2em;
+  }
+
+  .image-option {
+    display: flex;
+    gap: 2em;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .image-option img {
+    width: 300px;
+    max-width: 45%;
+    border: 1px solid #ccc;
+  }
+
+  .image-option .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+</style>
+</head>
+<script>
+  // ページ遷移処理
+  function nextPage(pageNum) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page' + pageNum).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function checkEvacuation() {
+    const input = document.getElementById('evacuationPlace').value.trim();
+    if (!input) {
+      document.getElementById('evacuationWarning').style.display = 'block';
+    } else {
+      alert("これで終了です。もしもの時は、確認した通りに動けるようにしておきましょう！");
+    }
+  }
+
+ function checkEvacuation2() {
+    const input = document.getElementById('evacuationPlace2').value.trim();
+    if (!input) {
+      document.getElementById('evacuationWarning2').style.display = 'block';
+    } else {
+      alert("これで終了です。もしもの時は、確認した通りに動けるようにしておきましょう！");
+    }
+  }
+
+  function checkSupplies1() {
+    const food = document.getElementById("food1").checked;
+    const water = document.getElementById("water1").checked;
+    const result = document.getElementById("supplyResult1");
+   if (food && water) {
+      result.textContent = "他に必要なものはないか、考えてみましょう！";
+    } else {
+      result.textContent = "足りないものを確認して、買い足しておきましょう！";
+    }
+  }
+
+  function checkSupplies2() {
+    const food = document.getElementById("food2").checked;
+    const water = document.getElementById("water2").checked;
+    const result = document.getElementById("supplyResult2");
+    if (food && water) {
+      alert("他に必要なものはないか、考えてみましょう！これで終了です。お疲れさまでした。");
+    } else {
+      alert("足りないものを確認して、買い足しておきましょう！これで終了です。お疲れさまでした。");
+    }
+  }
+
+  function checkSupplies3() {
+    const food = document.getElementById("food3").checked;
+    const water = document.getElementById("water3").checked;
+    const result = document.getElementById("supplyResult3");
+   if (food && water) {
+      alert("他に必要なものはないか、考えてみましょう！これで終了です。お疲れさまでした。");
+    } else {
+      alert("足りないものを確認して、買い足しておきましょう！これで終了です。お疲れさまでした。");
+    }
+  }
+
+  function checkSupplies4() {
+    const food = document.getElementById("food4").checked;
+    const water = document.getElementById("water4").checked;
+    const result = document.getElementById("supplyResult4");
+    if (food && water) {
+      alert("他に必要なものはないか、考えてみましょう！これで終了です。お疲れさまでした。");
+    } else {
+      alert("足りないものを確認して、買い足しておきましょう！これで終了です。お疲れさまでした。");
+    }
+  }
+
+  function checkSupplies5() {
+    const food = document.getElementById("food5").checked;
+    const water = document.getElementById("water5").checked;
+    const result = document.getElementById("supplyResult5");
+    if (food && water) {
+      alert("他に必要なものはないか、考えてみましょう！これで終了です。お疲れさまでした。");
+    } else {
+      alert("足りないものを確認して、買い足しておきましょう！これで終了です。お疲れさまでした。");
+    }
+  }
+
+  // 浸水深・住まい構造の分岐処理
+  let floodDepth = "";
+
+  function setFloodDepth(val) {
+    floodDepth = val;
+    if (val === "under0.5") {
+      nextPage(11);
+    } else if (val === "over10") {
+      nextPage(6);
+    } else {
+      nextPage(9);
+    }
+  }
+
+  function routeBasedOnResidence(toPage) {
+    nextPage(toPage);
+  }
+
+  // 最初のページを表示
+  window.onload = () => {
+    nextPage(0);
+  };
+</script>
+<body>
+
+<div class="page active" id="page0">
+  <h1>水害リスク診断</h1>
+  <p><span style="color:red;" >いくつかの質問に答えるだけで、</span><br>
+     自宅の水害リスクや避難行動をチェックできます。</p>
+  <div style="text-align: center; margin-top: 2em;">
+    <button onclick="nextPage(1)" style="font-size: 1.4em; padding: 0.8em 2em;">はじめる</button>
+  </div>
+</div>
+ 
+<div class="page" id="page1">
+  <h1>土砂災害について</h1>
+  <p>・大雨で山や崖が崩れ、土砂と一緒に流れ出すことで発生します。<br>
+  ・<span style="color:red; font-weight:bold;">突然発生するため、避難情報を出しにくい</span>です。</p>
+
+  <p class="question">
+    Q. あなたの家の近くに、<span style="color:red; font-weight:bold; text-decoration: underline;">山や崖などの急な斜面</span>はありますか？<br>
+    または、<span style="color:red; font-weight:bold; text-decoration: underline;">土砂災害警戒区域</span>に該当しますか？
+  </p>
+  <div class="choice">
+    <button style="background:#FEB7B5;" onclick="nextPage(2)">はい</button>
+    <button style="background:#90BCE4;" onclick="nextPage(3)">いいえ</button>
+  </div>
+</div>
+
+<div class="page" id="page2">
+  <h1 style="color:black;">あなたの家には…</h1>
+  <p><strong style="color:red; font-size: 1.2em;">土砂災害の危険性があります</strong><br>
+  災害発生前に、早めの避難が必要です。<br>
+  <span style="color:red; text-decoration: underline;">普段通り移動できるうちに</span>避難しましょう。<br>
+  <span style="color:red;">命の危険があります。</span></p>
+
+ <div class="input-block">
+    <label for="evacuationPlace">具体的な避難先は？（浸水しない親せき・知人宅や指定避難所）</label><br>
+    <input type="text" id="evacuationPlace" placeholder="避難先を入力">
+    <button onclick="checkEvacuation()">確認した！</button>
+    <p id="evacuationWarning" style="color:red; display:none;">決めていなくても、今考えてみましょう！</p>
+  </div>
+</div>
+<div class="page" id="page3">
+  <h1>河川の氾濫（外水氾濫）について</h1>
+  <p>・上流で降った大雨により川があふれ、<span style="color:red;">下流でも浸水します</span>。<br>
+  ・<span style="color:red;">今いる場所で雨が降っていなくても、被害の可能性があります</span>。</p>
+
+  <p class="question">
+    Q. あなたの家の近くに、<span style="color:red; font-weight:bold; text-decoration: underline;">大きな川や堤防</span>などはありますか？<br>
+    または、<span style="color:red; font-weight:bold; text-decoration: underline;">ハザードマップ上で自宅の場所に色が塗られていますか？</span>
+  </p>
+  <div class="choice">
+    <button style="background:#FEB7B5;" onclick="nextPage(4)">はい</button>
+    <button style="background:#90BCE4;" onclick="nextPage(5)">いいえ</button>
+  </div>
+</div>
+
+<div class="page" id="page4">
+  <h1>浸水時の家屋倒壊リスクについて</h1>
+  <p>・川の近くや水の集まりやすい場所では、<span style="color:red;">家が流される危険性があります。</span><br>
+  ・家屋倒壊の危険性がある場合は、避難所等への避難が必要です。</p>
+
+  <p class="question">
+    Q. ハザードマップ上で、自宅の場所が
+    <span style="color:red; font-weight:bold; text-decoration: underline;">家屋倒壊氾濫想定区域</span>に該当しますか？
+  </p>
+  <div class="choice">
+    <button style="background:#FEB7B5;" onclick="nextPage(6)">はい</button>
+    <button style="background:#90BCE4;" onclick="nextPage(7)">いいえ</button>
+  </div>
+</div>
+
+<div class="page" id="page5">
+  <h1 style="color:black;">あなたの家は…</h1>
+  <p><strong style="color:red; font-size: 1.2em;">水害・土砂災害のリスクが低い場所です。</strong><br>
+  <span style="text-decoration: underline;">大雨の時は、在宅避難をしてください。<br>
+  むやみに外に出ると危険です。</p>
+
+  <p>ただし…<br>
+  自宅が浸水しなくても、お住まいの地域が広域に浸水した場合は、電気・水道・ガスが止まる可能性があるため<span style="color:red;">最低限の備えが必要です。</p>
+
+  <div class="input-block">
+    <p>以下の備えはできていますか？</p>
+    <label><input type="checkbox" id="food5"> <span style="font-weight:bold;">３日分以上の食料</span>（缶詰、レトルト食品、お菓子などでもよい）</label></br>
+    <label><input type="checkbox" id="water5"> <span style="font-weight:bold;">水</span>（大人１人当たり１日３リットル）</label><br><br>
+    <button onclick="checkSupplies5()">確認</button>
+    <p id="supplyResult5" style="margin-top:10px;"></p>
+  </div>
+</div>
+<div class="page" id="page6">
+  <h1 style="color:black;">あなたの家は…</h1>
+  <p><strong style="color:red; font-size: 1.2em;">水害のリスクが高い場所です。</strong><br>
+  <span style="color:red; text-decoration: underline;">自宅では水害をやり過ごすことができません。</span><br>
+  <span style="color:red; text-decoration: underline;">命の危険に関わります。</span><br>
+  自治体からの避難情報が出たら、速やかに避難しましょう。</p>
+  <button onclick="nextPage(8)">具体的な避難方法を考える</button>
+</div>
+
+<div class="page" id="page7">
+  <h1>自宅の浸水想定について</h1>
+  <div class="image-option">
+    <p class="question">Q. あなたの家に想定されている浸水はどの程度ですか？</p> 
+    <img src="https://raw.githubusercontent.com/GUdsel/hazardrisk_check/main/浸水凡例.png" width="10" height="600">
+    <div class="choice">
+     <button style="background:#F285C9;" button onclick="nextPage(6)">10m以上</button2>
+     <button style="background:#FF9190;" button onclick="nextPage(19)">5m以上10m未満</button>
+     <button style="background:#FEB7B5;" button onclick="nextPage(18)">3m以上5m未満</button>
+     <button style="background:#FDD8BE;" button onclick="nextPage(9)">0.5m以上3m未満</button>
+     <button style="background:#F4F5A9;" button onclick="nextPage(11)">0.5m未満</button>
+    </div>
+  </div>
+</div>
+<div class="page" id="page8">
+  <h1>避難方法について</h1>
+  <p>避難する際は、どこに逃げるかだけでなく、<span style="color:red; font-weight:bold;">いつ逃げるか</span>も重要です。</p>
+
+  <ul>
+    <li>避難に時間がかかる人が<span style="color:red; font-weight:bold;">いる</span>場合→<span class="btn-orange">高齢者等避難</span>が出たら避難</li><br>
+    <li>避難に時間がかかる人が<span style="color:red; font-weight:bold;">いない</span>場合→<span class="btn-purple">避難指示</span>が出たら避難</li>
+  </ul>
+　<br>
+  <p>では、どこに避難するか確認しましょう。（※基本的には徒歩避難）</p>
+
+  <div class="input-block2">
+    <label for="evacuationPlace2">具体的な避難先は？（浸水しない親せき・知人宅や指定避難所）</label><br>
+    <input type="text" id="evacuationPlace2" placeholder="避難先を入力">
+    <button onclick="checkEvacuation2()">確認した！</button>
+    <p id="evacuationWarning2" style="color:red; display:none;">決めていなくても、今考えてみましょう！</p>
+  </div>
+</div>
+
+<div class="page" id="page9">
+  <h1>あなたのお住まいについて</h1>
+  <p class="question">Q. あなたのお住まいは以下のうちどれに該当しますか？</p>
+  <justify-content: space-between;">
+    <div>
+      <h3>戸建て</h3>
+      <button onclick="routeBasedOnResidence(10)">1階建て</button><br>
+      <button onclick="routeBasedOnResidence(15)">2階建て</button><br>
+      <button onclick="routeBasedOnResidence(15)">3・4階建て</button><br>
+      <button onclick="routeBasedOnResidence(15)">5階建て以上</button>
+    </div>
+    <div>
+      <h3>集合住宅</h3>
+      <button onclick="routeBasedOnResidence(10)">1階</button><br>
+      <button onclick="routeBasedOnResidence(15)">2階</button><br>
+      <button onclick="routeBasedOnResidence(15)">3・4階</button><br>
+      <button onclick="routeBasedOnResidence(15)">5階以上</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page18">
+  <h1>あなたのお住まいについて</h1>
+  <p class="question">Q. あなたのお住まいは以下のうちどれに該当しますか？</p>
+  <justify-content: space-between; gap: 20px;">
+    <div>
+      <h3>戸建て</h3>
+      <button onclick="routeBasedOnResidence(10)">1階建て</button><br>
+      <button onclick="routeBasedOnResidence(10)">2階建て</button><br>
+      <button onclick="routeBasedOnResidence(16)">3・4階建て</button><br>
+      <button onclick="routeBasedOnResidence(16)">5階建て以上</button>
+    </div>
+    <div>
+      <h3>集合住宅</h3>
+      <button onclick="routeBasedOnResidence(10)">1階</button><br>
+      <button onclick="routeBasedOnResidence(10)">2階</button><br>
+      <button onclick="routeBasedOnResidence(16)">3・4階</button><br>
+      <button onclick="routeBasedOnResidence(16)">5階以上</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page19">
+  <h1>あなたのお住まいについて</h1>
+  <p class="question">Q. あなたのお住まいは以下のうちどれに該当しますか？</p>
+  <justify-content: space-between; gap: 20px;">
+    <div>
+      <h3>戸建て</h3>
+      <button onclick="routeBasedOnResidence(10)">1階建て</button><br>
+      <button onclick="routeBasedOnResidence(10)">2階建て</button><br>
+      <button onclick="routeBasedOnResidence(10)">3・4階建て</button><br>
+      <button onclick="routeBasedOnResidence(17)">5階建て以上</button>
+    </div>
+    <div>
+      <h3>集合住宅</h3>
+      <button onclick="routeBasedOnResidence(10)">1階</button><br>
+      <button onclick="routeBasedOnResidence(10)">2階</button><br>
+      <button onclick="routeBasedOnResidence(10)">3・4階</button><br>
+      <button onclick="routeBasedOnResidence(17)">5階以上</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page10">
+  <h1 style="color:black;">あなたの家は…</h1>
+  <p><strong style="color:red; font-size: 1.2em;">命の危険がある場所です。</strong><br>
+  <span style="color:red; text-decoration: underline;">自宅では水害をやり過ごすのは難しいです。</span><br>
+  自治体からの避難情報が出たら、速やかに避難しましょう。</p>
+  <button onclick="nextPage(8)">具体的な避難方法を考える</button>
+</div>
+
+<div class="page" id="page11">
+  <h1 style="color:black;">あなたの家は…</h1>
+  <p><strong style="color:red;">水害リスクはありますが、自宅でやり過ごすことも可能です。</strong><br>
+  ほとんどの場合、在宅避難が可能ですが、想定外の事態が起こる可能性もあります。</p>
+  <p>その上であなたはどうしますか？</p>
+  <div class="choice">
+    <button onclick="nextPage(12)">少しの危険性と不便は覚悟の上で自宅にとどまる</button>
+    <button onclick="nextPage(8)">不安なので避難方法を確認する</button>
+  </div>
+</div>
+
+<div class="page" id="page12">
+  <p><strong style="color:red;">大雨の際は、在宅避難してください。</strong></br>
+  そのためには、<span style="color:red;">最低限の備えが必要です。</p>
+  <div class="input-block">
+    <p>以下の備えはできていますか？</p>
+    <label><input type="checkbox" id="food2"> <span style="font-weight:bold;">３日分以上の食料</span>（缶詰、レトルト食品、お菓子などでもよい）</label><br>
+    <label><input type="checkbox" id="water2"> <span style="font-weight:bold;">水</span>（大人１人当たり１日３リットル）</label><br><br>
+    <button onclick="checkSupplies2()">確認した！</button>
+    <p id="supplyResult2" style="margin-top:10px;"></p>
+  </div>
+</div>
+
+<div class="page" id="page13">
+  <p><strong style="color:red;">大雨の際は、2階以上に避難してください。</strong></br>
+  そのためには、<span style="color:red;">最低限の備えが必要です。</p> 
+  <div class="input-block">
+    <p>以下の備えはできていますか？</p>
+    <label><input type="checkbox" id="food3"> <span style="font-weight:bold;">３日分以上の食料</span>（缶詰、レトルト食品、お菓子などでもよい）</label><br>
+    <label><input type="checkbox" id="water3"> <span style="font-weight:bold;">水</span>（大人１人当たり１日３リットル）</label><br><br>
+    <button onclick="checkSupplies3()">確認した！</button>
+    <p id="supplyResult3" style="margin-top:10px;"></p>
+  </div>
+</div>
+
+<div class="page" id="page14">
+  <p><strong style="color:red;">大雨の際は、3階以上に避難してください。</strong></br>
+  そのためには、<span style="color:red;">最低限の備えが必要です。</p> 
+  <div class="input-block">
+    <p>以下の備えはできていますか？</p>
+    <label><input type="checkbox" id="food4"> <span style="font-weight:bold;">３日分以上の食料</span>（缶詰、レトルト食品、お菓子などでもよい）</label><br>
+    <label><input type="checkbox" id="water4"> <span style="font-weight:bold;">水</span>（大人１人当たり１日３リットル）</label><br><br>
+    <button onclick="checkSupplies4()">確認した！</button>
+    <p id="supplyResult4" style="margin-top:10px;"></p>
+  </div>
+</div>
+
+<div class="page" id="page15">
+  <h1 style="color:black;">あなたの家は…</h1>
+  <p><strong style="color:red;">水害リスクはありますが、自宅でやり過ごすことも可能です。</strong><br>
+  ほとんどの場合、在宅避難が可能ですが、想定外の事態が起こる可能性もあります。</p>
+  <p>その上であなたはどうしますか？</p>
+  <div class="choice">
+    <button onclick="nextPage(13)">少しの危険性と不便は覚悟の上で自宅にとどまる</button>
+    <button onclick="nextPage(8)">不安なので避難方法を確認する</button>
+  </div>
+</div>
+
+<div class="page" id="page16">
+  <h1 style="color:black;">あなたの家は…</h1>
+  <p><strong style="color:red;">水害リスクはありますが、自宅でやり過ごすことも可能です。</strong><br>
+  ほとんどの場合、在宅避難が可能ですが、想定外の事態が起こる可能性もあります。</p>
+  <p>その上であなたはどうしますか？</p>
+  <div class="choice">
+    <button onclick="nextPage(14)">少しの危険性と不便は覚悟の上で自宅にとどまる</button>
+    <button onclick="nextPage(8)">不安なので避難方法を確認する</button>
+  </div>
+</div>
+
+<div class="page" id="page17">
+  <h1 style="color:black;">あなたの家は…</h1>
+  <p><strong style="color:red;">水害リスクはありますが、自宅でやり過ごすことも可能です。</strong><br>
+  ほとんどの場合、在宅避難が可能ですが、想定外の事態が起こる可能性もあります。</p>
+  <p>その上であなたはどうしますか？</p>
+  <div class="choice">
+    <button onclick="nextPage(20)">少しの危険性と不便は覚悟の上で自宅にとどまる</button>
+    <button onclick="nextPage(8)">不安なので避難方法を確認する</button>
+  </div>
+</div>
+
+<div class="page" id="page20">
+  <p><strong style="color:red;">大雨の際は、5階以上に避難してください。</strong></br>
+  そのためには、<span style="color:red;">最低限の備えが必要です。</p> 
+  <div class="input-block">
+    <p>以下の備えはできていますか？</p>
+    <label><input type="checkbox" id="food4"> <span style="font-weight:bold;">３日分以上の食料</span>（缶詰、レトルト食品、お菓子などでもよい）</label><br>
+    <label><input type="checkbox" id="water4"> <span style="font-weight:bold;">水</span>（大人１人当たり１日３リットル）</label><br><br>
+    <button onclick="checkSupplies4()">確認した！</button>
+    <p id="supplyResult4" style="margin-top:10px;"></p>
+  </div>
+</div>
+
